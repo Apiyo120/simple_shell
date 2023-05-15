@@ -8,6 +8,7 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <signal.h>
+#include <sys/stat.h>
 
 char **_copy_env(void);
 char **_parse_line(char *line);
