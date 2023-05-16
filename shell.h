@@ -20,5 +20,10 @@ int _print_error(char *command, char *message, int status);
 void _free_args(char **args);
 void _free_path(char *path);
 void _free_env(char **env);
+int _strlen(char *str);
+char *_strdup(char *str);
+char *_strcat(char *dest, char *src);
+char *_getenv(const char *name, char **env);
+int _strcmp(char *s1, char *s2);
 
 #endif 
