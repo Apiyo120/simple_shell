@@ -37,10 +37,13 @@ void _free_env(char **env)
 {
 	int z;
 
-	if	(env)
+	if (!env)
+		return;
+
+	for (z = 0; env[z]; z++)
 	{
-		for	(z = 0; env[z]; z++)
-			free(env[z]);
-		free(env);
+		free(env[z]);
+		env[z] = NULL;
 	}
+	free(env);
 }

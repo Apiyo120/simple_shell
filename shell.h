@@ -25,5 +25,8 @@ char *_strdup(char *str);
 char *_strcat(char *dest, char *src);
 char *_getenv(const char *name, char **env);
 int _strcmp(char *s1, char *s2);
+void _print_env(char **env);
+int _atoi(char *s);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
 #endif 
