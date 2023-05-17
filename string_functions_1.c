@@ -108,13 +108,16 @@ char **_copy_env(void)
 		env_copy[z] = _strdup(environ[z]);
 
 	env_copy[z] = NULL;
-	new_env = _realloc(env_copy, (len + 1) * sizeof(char *),
-				(len + 2) * sizeof(char *));
+	new_env = malloc((len + 2) * sizeof(char *));
+
 	if (!new_env)
 	{
 		_free_env(env_copy);
 		return (NULL);
 	}
+	for (z = 0; z < len + 1; z++)
+		new_env[z] = env_copy[z];
+
 	new_env[len + 1] = NULL;
 	_free_env(env_copy);
 	return (new_env);

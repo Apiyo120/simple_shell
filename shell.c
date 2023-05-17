@@ -19,7 +19,10 @@ int main(void)
 			write(STDOUT_FILENO, "$ ", 2);
 		bytes_read = getline(&buffer, &buffer_size, stdin);
 		if (bytes_read == -1)
+		{	
+			free(buffer);
 			break;
+		}
 		args = _parse_line(buffer);
 		if (!args)
 		{

@@ -37,7 +37,7 @@ void _free_env(char **env)
 {
 	int z;
 
-	if (!env)
+	if (env == NULL)
 		return;
 
 	for (z = 0; env[z]; z++)
