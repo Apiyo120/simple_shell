@@ -38,8 +38,6 @@ char *_find_path(char *command, char **env)
 		}
 		if (stat(command_path, &st) == 0)
 			break;
-		free(command_path);
-		command_path = NULL;
 		path_token = strtok(NULL, ":");
 	}
 	free(path_copy);
