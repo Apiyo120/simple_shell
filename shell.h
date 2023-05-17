@@ -10,6 +10,7 @@
 #include <signal.h>
 #include <sys/stat.h>
 
+extern char **environ;
 char **_copy_env(void);
 char **_parse_line(char *line);
 int _is_builtin(char **args);

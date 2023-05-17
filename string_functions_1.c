@@ -87,16 +87,36 @@ void _print_env(char **env)
 		write(STDOUT_FILENO, env[z], _strlen(env[z])), write(STDOUT_FILENO, "\n", 1);
 }
 
+/**
+ * _copy_env - create a copy of the environment variables
+ *
+ * Return: pointer to the copy of environment variables
+ */
+char **_copy_env(void)
+{
+	int z, len;
+	char **env_copy, **new_env;
 
+	for (len = 0; environ[len]; len++)
+	;
 
+	env_copy = malloc((len + 1) * sizeof(char *));
+	if (!env_copy)
+		return (NULL);
 
+	for (z = 0; z < len; z++)
+		env_copy[z] = _strdup(environ[z]);
 
-
-
-
-
-
-
-
-
+	env_copy[z] = NULL;
+	new_env = _realloc(env_copy, (len + 1) * sizeof(char *),
+				(len + 2) * sizeof(char *));
+	if (!new_env)
+	{
+		_free_env(env_copy);
+		return (NULL);
+	}
+	new_env[len + 1] = NULL;
+	_free_env(env_copy);
+	return (new_env);
+}
 
