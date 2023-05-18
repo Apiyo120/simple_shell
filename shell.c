@@ -19,7 +19,7 @@ int main(void)
 			write(STDOUT_FILENO, "$ ", 2);
 		bytes_read = getline(&buffer, &buffer_size, stdin);
 		if (bytes_read == -1)
-		{	
+		{
 			free(buffer);
 			break;
 		}
@@ -43,7 +43,6 @@ int main(void)
 		}
 		else
 			status = _print_error(args[0], "not found", status);
-
 		_free_args(args);
 	}
 	free(buffer);

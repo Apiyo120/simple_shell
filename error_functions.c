@@ -13,12 +13,21 @@ int _print_error(char *command, char *message, int status)
 {
 	char *error_message = NULL;
 
-	error_message = _strcat(command, ": ");
-	error_message = _strcat(error_message, message);
-	error_message = _strcat(error_message, "\n");
+	if (command)
+	{
+		error_message = _strcat(command, ": ");
+		error_message = _strcat(error_message, message);
+		error_message = _strcat(error_message, "\n");
+	}
+	else
+	{
+		error_message = _strdup(message);
+		if (!error_message)
+			return (status);
+	}
 
 	write(STDERR_FILENO, error_message, _strlen(error_message));
-		free(error_message);
+	free(error_message);
 
 	return (status);
 }

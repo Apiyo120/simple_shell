@@ -94,32 +94,53 @@ void _print_env(char **env)
  */
 char **_copy_env(void)
 {
-	int z, len;
-	char **env_copy, **new_env;
+	int len = 0;
+	int y, z;
+	char **env_copy = NULL;
+	size_t var_len;
 
-	for (len = 0; environ[len]; len++)
-	;
+	while (environ[len] != NULL)
+		len++;
 
 	env_copy = malloc((len + 1) * sizeof(char *));
-	if (!env_copy)
+	if (env_copy == NULL)
 		return (NULL);
 
 	for (z = 0; z < len; z++)
-		env_copy[z] = _strdup(environ[z]);
-
-	env_copy[z] = NULL;
-	new_env = malloc((len + 2) * sizeof(char *));
-
-	if (!new_env)
 	{
-		_free_env(env_copy);
-		return (NULL);
+		var_len = strlen(environ[z]) + 1;
+		env_copy[z] = malloc(var_len * sizeof(char));
+		if (env_copy[z] == NULL)
+		{
+			for (y = 0; y < z; y++)
+				free(env_copy[y]);
+			free(env_copy);
+			return (NULL);
+		}
+		strcpy(env_copy[z], environ[z]);
 	}
-	for (z = 0; z < len + 1; z++)
-		new_env[z] = env_copy[z];
-
-	new_env[len + 1] = NULL;
-	_free_env(env_copy);
-	return (new_env);
+	env_copy[len] = NULL;
+	return (env_copy);
 }
 
+/**
+ * _strcpy - copies a string including the null-terminating byte
+ * @dest: destination buffer
+ * @src: source string
+ *
+ * Return: Pointer to the destination buffer
+ */
+char *_strcpy(char *dest, const char *src)
+{
+	char *dest_start = dest;
+
+	while (*src)
+	{
+		*dest = *src;
+		dest++;
+		src++;
+	}
+
+	*dest = '\0';
+	return (dest_start);
+}

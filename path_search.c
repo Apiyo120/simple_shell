@@ -22,7 +22,7 @@ char *_find_path(char *command, char **env)
 		return (NULL);
 	path_token = strtok(path_copy, ":");
 	while (path_token)
-	{	
+	{
 		free(command_path);
 		command_path = _strcat(path_token, "/");
 		if (!command_path)
@@ -36,6 +36,7 @@ char *_find_path(char *command, char **env)
 			free(path_copy);
 			return (NULL);
 		}
+
 		if (stat(command_path, &st) == 0)
 			break;
 		path_token = strtok(NULL, ":");

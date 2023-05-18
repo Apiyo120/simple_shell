@@ -43,12 +43,18 @@ char *_strdup(char *str)
  */
 char *_strcat(char *dest, char *src)
 {
-	int dest_len = 0, z;
+	int dest_len, z;
 
-	while (dest[dest_len])
+	if (dest == NULL || src == NULL)
+		return (NULL);
+
+	dest_len = 0;
+	while (dest[dest_len] != '\0')
 		dest_len++;
-	for (z = 0; src[z]; z++)
+
+	for (z = 0; src[z] != '\0'; z++)
 		dest[dest_len + z] = src[z];
+
 	dest[dest_len + z] = '\0';
 	return (dest);
 }

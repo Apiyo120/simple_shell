@@ -9,12 +9,15 @@ void _free_args(char **args)
 {
 	int z;
 
-	if	(args)
+	if (args == NULL)
+		return;
+
+	for (z = 0; args[z]; z++)
 	{
-		for	(z = 0; args[z]; z++)
-			free(args[z]);
-		free(args);
+		free(args[z]);
+		args[z] = NULL;
 	}
+	free(args);
 }
 
 /**
@@ -24,7 +27,7 @@ void _free_args(char **args)
 
 void _free_path(char *path)
 {
-	if	(path)
+	if (path)
 		free(path);
 }
 
@@ -40,10 +43,9 @@ void _free_env(char **env)
 	if (env == NULL)
 		return;
 
-	for (z = 0; env[z]; z++)
+	for (z = 0; env[z] != NULL; z++)
 	{
 		free(env[z]);
-		env[z] = NULL;
 	}
 	free(env);
 }

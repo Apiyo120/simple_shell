@@ -28,6 +28,7 @@ char *_getenv(const char *name, char **env);
 int _strcmp(char *s1, char *s2);
 void _print_env(char **env);
 int _atoi(char *s);
+char *_strcpy(char *dest, const char *src);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
 #endif 
