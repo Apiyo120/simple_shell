@@ -10,30 +10,26 @@
 char **_parse_line(char *line)
 {
 	const char *separator = " \t\n";
-	char **words, **new_words, *arg;
+	char **words = NULL;
+	char *arg, **new_words;
 	size_t size = 0;
 	int z = 0;
-
-	words = malloc(sizeof(char *));
-	if (!words)
-		return (NULL);
 
 	arg = strtok(line, separator);
 	while (arg)
 	{
-		if ((size_t)z == size)
+		if ((size_t)z >= size)
 		{
 			size = size + 20;
 			new_words = _realloc(words, size * sizeof(char *),
 					(size + 20) * sizeof(char *));
 			if (!new_words)
 			{
-				free(words);
+				_free_args(words);
 				return (NULL);
 			}
 			words = new_words;
 		}
-
 		words[z] = strdup(arg);
 		if (!words[z])
 		{
@@ -43,6 +39,13 @@ char **_parse_line(char *line)
 		z++;
 
 		arg = strtok(NULL, separator);
+	}
+	words = _realloc(words, (z + 1) * sizeof(char *),
+			(z + 1) * sizeof(char *));
+	if (!words)
+	{
+		_free_args(words);
+		return (NULL);
 	}
 	words[z] = NULL;
 	return (words);
