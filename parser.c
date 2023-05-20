@@ -1,52 +1,47 @@
 #include "shell.h"
 
 /**
- * _parse_line - parse a line into arguments
- * @line: the line to parse
+ * _parse_line - Parses input line and separates to individual arguments.
  *
- * Return: array of arguments
+ * @line: The input to be parsed.
+ * @args: An array of strings to store the parsed arguments.
  */
 
-char **_parse_line(char *line)
+void _parse_line(char *line, char **args)
 {
-	const char *separator = " \t\n";
-	char **words = NULL;
-	char *arg, **new_words;
-	size_t size = 0;
 	int z = 0;
+	char *end;
+	bool has_arguments = true;
 
-	arg = strtok(line, separator);
-	while (arg)
-	{
-		if ((size_t)z >= size)
-		{
-			size = size + 20;
-			new_words = _realloc(words, size * sizeof(char *),
-					(size + 20) * sizeof(char *));
-			if (!new_words)
-			{
-				_free_args(words);
-				return (NULL);
-			}
-			words = new_words;
-		}
-		words[z] = strdup(arg);
-		if (!words[z])
-		{
-			_free_args(words);
-			return (NULL);
-		}
-		z++;
+	while	(isspace(*line))
+		line++;
 
-		arg = strtok(NULL, separator);
-	}
-	words = _realloc(words, (z + 1) * sizeof(char *),
-			(z + 1) * sizeof(char *));
-	if (!words)
+	if	(*line == '\0')
 	{
-		_free_args(words);
-		return (NULL);
+		args[0] = NULL;
+		return;
 	}
-	words[z] = NULL;
-	return (words);
+	while	(*line != '\0')
+	{
+		end = strchr(line, ' ');
+
+		if	(end == NULL)
+		{
+			args[z++] = line;
+			break;
+		}
+		end = '\0';
+
+		args[z++] = line;
+		line = end + 1;
+
+		while	(isspace(*line))
+			line++;
+		has_arguments = false;
+	}
+
+	args[z] = NULL;
+
+	if	(has_arguments && _strcmp(args[0], "exit") == 0)
+		exit(0);
 }
