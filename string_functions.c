@@ -1,40 +1,6 @@
 #include "shell.h"
 
 /**
- * _strdup - duplicates a string.
- * @str:strings to duplicate.
- *
- * Return: pointer to duplicate string, NULL if malloc fails.
- */
-
-char *_strdup(char *str)
-{
-	char *dup;
-	int len = 0;
-
-	if (!str)
-		return (NULL);
-	while (str[len])
-	{
-		len++;
-	}
-	dup = malloc(sizeof(char) * (len + 1));
-
-	if (!dup)
-		return (NULL);
-	len = 0;
-
-	while (str[len])
-	{
-		dup[len] = str[len];
-		len++;
-	}
-	dup[len] = '\0';
-	return (dup);
-}
-
-
-/**
  * _strcat - concatenates two strings.
  * @dest: destination string.
  * @src: source string.
@@ -76,38 +42,6 @@ int _strlen(char *str)
 }
 
 /**
- * _getenv - gets the value of an environment variable
- * @name: name of the environment variable
- * @env: array of environment variables
- *
- * Return: value of the environment variable or NULL if not found
- */
-char *_getenv(const char *name, char **env)
-{
-	int y, z, len;
-	char *env_var;
-
-	if (!name || !env)
-		return (NULL);
-
-	len = strlen(name);
-	for (y = 0; env[y] != NULL; y++)
-	{
-		env_var = env[y];
-		for (z = 0; z < len; z++)
-		{
-			if (name[z] != env_var[z])
-				break;
-		}
-		if (z == len && env_var[z] == '=')
-		{
-			return (env_var + z + 1);
-		}
-	}
-	return (NULL);
-}
-
-/**
  * _strcmp - compares two strings
  * @s1: first string
  * @s2: second string
@@ -116,13 +50,31 @@ char *_getenv(const char *name, char **env)
  */
 int _strcmp(char *s1, char *s2)
 {
-	int z = 0;
-
-	while (s1[z] && s2[z])
+	while (*s1 && (*s1 == *s2))
 	{
-		if (s1[z] != s2[z])
-			return (s1[z] - s2[z]);
-		z++;
+		s1++;
+		s2++;
 	}
-	return (s1[z] - s2[z]);
+	return (*(unsigned char *)s1 - *(unsigned char *)s2);
+}
+
+/**
+ * _strcpy - copies a string including the null-terminating byte
+ * @dest: destination buffer
+ * @src: source string
+ *
+ * Return: Pointer to the destination buffer
+ */
+char *_strcpy(char *dest, const char *src)
+{
+	char *dest_start = dest;
+
+	while (*src)
+	{
+		*dest = *src;
+		dest++;
+		src++;
+	}
+	*dest = '\0';
+	return (dest_start);
 }

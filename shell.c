@@ -1,52 +1,137 @@
 #include "shell.h"
 
-/**
- * main - Entry point for simple shell program
- *
- * Return: Always 0 on success
- */
-int main(void)
-{
-	char *buffer = NULL, **args = NULL, *path = NULL, **env = NULL;
-	ssize_t bytes_read = 0;
-	size_t buffer_size = 0;
-	int status = 0;
+#define COMMAND_BUFFER_SIZE 1024
 
-	env = _copy_env();
-	while (1)
+
+/**
+ * parseLine-Parses a command line string
+ * and stores the individual arguments in an array.
+ *
+ * @command:The command line string to be parsed.
+ * @args: An array to store the parsed arguments.
+ */
+
+void parseLine(char *command, char **args)
+{
+	int index = 0;
+	char *token = strtok(command, " \t\n");
+
+	while (token != NULL)
 	{
-		if (isatty(STDIN_FILENO))
-			write(STDOUT_FILENO, "$ ", 2);
-		bytes_read = getline(&buffer, &buffer_size, stdin);
-		if (bytes_read == -1)
+		args[index++] = token;
+		token = strtok(NULL, " \t\n");
+	}
+	args[index] = NULL;
+}
+
+/**
+ *  executeCommand- Executes a command by invoking
+ *  the corresponding functionality
+ *  based on the arguments.
+ *
+ * @command: The command to be executed.
+ * @exit_status: A pointer to the exit status variable.
+ *
+ * Return: 1 if the command is an "exit" command, 0 otherwise.
+ */
+
+int executeCommand(char *command, int *exit_status)
+{
+	char *args[COMMAND_BUFFER_SIZE / 2 + 1];
+
+	parseLine(command, args);
+
+	if (args[0] == NULL)
+		return (0);
+
+	if (_strcmp(args[0], "exit") == 0)
+	{
+		free(command);
+		return (1);
+	}
+	if (_strcmp(args[0], "env") == 0)
+	{
+		env_builtin();
+		return (0);
+	}
+	*exit_status = _execute(args);
+	return (0);
+}
+
+/**
+ * readCommand- Reads a command line from the standard input.
+ *
+ * @command: A pointer to the command string.
+ * @command_size: A pointer to the size of the command string.
+ */
+
+void readCommand(char **command, size_t *command_size)
+{
+	if (getline(command, command_size, stdin) == -1)
+		*command = NULL;
+}
+
+/*
+ * processCommand: A function that processes a command line
+ * by removing comments and newline characters
+ *
+ */
+
+void processCommand(char **command)
+{
+	char *index, last_char, *ptr;
+	int quote_flag;
+
+	quote_flag = 0;
+	last_char = '\0';
+	index = NULL;
+
+	for (ptr = *command; *ptr != '\0'; ++ptr)
+	{
+		if (*ptr == '"' && last_char != '\\')
+			quote_flag = !quote_flag;
+		else if (*ptr == '#' && !quote_flag && last_char != '\\')
 		{
-			free(buffer);
+			index = ptr;
 			break;
 		}
-		args = _parse_line(buffer);
-		if (!args)
-		{
-			free(buffer);
-			continue;
-		}
-		if (_is_builtin(args))
-		{
-			status = _execute_builtin(args, env);
-			_free_args(args);
-			continue;
-		}
-		path = _find_path(args[0], env);
-		if (path)
-		{
-			status = _execute(args, path, env);
-			_free_path(path);
-		}
-		else
-			status = _print_error(args[0], "not found", status);
-		_free_args(args);
+		last_char = *ptr;
 	}
-	free(buffer);
-	_free_env(env);
-	write(STDOUT_FILENO, "\n", 1);
-	return (status);
+
+	if (index != NULL)
+		*index = '\0';
+
+	(*command)[strcspn(*command, "\n")] = '\0';
+}
+
+/**
+ * main - function that runs the interactive shell.
+ *
+ * Return: The exit status of the shell.
+ */
+
+int main(void)
+{
+	char *command = NULL;
+	size_t command_size = 0;
+	int display_command = isatty(STDIN_FILENO);
+	int exit_status = 0;
+
+	while (1)
+	{
+		if (display_command)
+			write(STDOUT_FILENO, "#James&Diana$ ", 14);
+
+		readCommand(&command, &command_size);
+
+		if (command == NULL)
+			break;
+
+		processCommand(&command);
+
+		if (executeCommand(command, &exit_status))
+			break;
+	}
+	free(command);
+	return (exit_status);
 }

@@ -13,6 +13,6 @@ void env_builtin(void)
 	{
 		write(STDOUT_FILENO, environ[z], _strlen(environ[z]));
 		write(STDOUT_FILENO, "\n", 1);
-		z++
+		z++;
 	}
 }

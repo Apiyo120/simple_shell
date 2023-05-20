@@ -1,53 +1,44 @@
 #include "shell.h"
 
 /**
- * _find_path - searches for the path of the given command
- * @command: name of command
- * @env: environment variables
+ * _find_path - Finds the full path of an executable file
+ * @command: The command name for which to find the full path.
  *
- * Return: full path of the command if found
- * NULL otherwise
+ * Return:    A pointer to a dynamically allocated string
+ *            containing the full path of the executable file, or
+ *            NULL if the file is not found or on memory allocation failure.
  */
-char *_find_path(char *command, char **env)
+
+char *_find_path(char *command)
 {
-	char *path = _getenv("PATH", env);
-	char *path_token = NULL, *command_path = NULL, *path_copy = NULL;
-	struct stat st;
+	char *path = getenv("PATH");
+	char *folder = strtok(path, ":");
+	char *abs_path = NULL;
+	struct stat file_data;
+	size_t folder_len, command_len, path_len;
 
-	if (!path)
-		return (NULL);
-
-	path_copy = _strdup(path);
-	if (!path_copy)
-		return (NULL);
-	path_token = strtok(path_copy, ":");
-	while (path_token)
+	while (folder != NULL)
 	{
-		free(command_path);
-		command_path = _strcat(path_token, "/");
-		if (!command_path)
+		folder_len = _strlen(folder);
+		command_len = _strlen(command);
+		path_len = folder_len + 1 + command_len + 1;
+
+		abs_path = malloc(path_len * sizeof(char));
+		if (abs_path == NULL)
 		{
-			free(path_copy);
 			return (NULL);
 		}
-		command_path = _strcat(command_path, command);
-		if (!command_path)
-		{
-			free(path_copy);
-			return (NULL);
-		}
+		_strcpy(abs_path, folder);
+		_strcat(abs_path, "/");
+		_strcat(abs_path, command);
 
-		if (stat(command_path, &st) == 0)
-			break;
-		path_token = strtok(NULL, ":");
+		if (stat(abs_path, &file_data) == 0 && S_ISREG(file_data.st_mode)
+				&& (file_data.st_mode & S_IXUSR))
+		{
+			return (abs_path);
+		}
+		free(abs_path);
+		folder = strtok(NULL, ":");
 	}
-	free(path_copy);
-	if (!command_path)
-		return (NULL);
-	if (stat(command_path, &st) == -1)
-	{
-		free(command_path);
-		return (NULL);
-	}
-	return (command_path);
+	return (NULL);
 }
