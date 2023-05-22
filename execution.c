@@ -9,6 +9,19 @@ int _execute(char **args)
 {
 	pid_t process_id;
 	int exit_status, process_status = 0;
+	char exec_err[] = "Error: Unable to execute command.\n";
+
+	if (access(args[0], X_OK) == -1)
+	{
+		char file_err[] = "Error: Unable to open file: ";
+		char newline = '\n';
+
+		write(STDERR_FILENO, file_err, sizeof(file_err) - 1);
+		write(STDERR_FILENO, args[0], _strlen(args[0]));
+		write(STDERR_FILENO, &newline, 1);
+
+		return (EXIT_FAILURE);
+	}
 
 	process_id = fork();
 	if (process_id == -1)
@@ -22,22 +35,9 @@ int _execute(char **args)
 	{
 		execvp(args[0], args);
 
-		if (errno == ENOENT)
-		{
-			char file_err[] = "Error: Unable to open file: ";
-			char newline = '\n';
+		write(STDERR_FILENO, exec_err, sizeof(exec_err) - 1);
 
-			write(STDERR_FILENO, file_err, sizeof(file_err) - 1);
-			write(STDERR_FILENO, args[0], _strlen(args[0]));
-			write(STDERR_FILENO, &newline, 1);
-		}
-		else
-		{
-			char exec_err[] = "Error: Unable to execute command.\n";
-
-			write(STDERR_FILENO, exec_err, sizeof(exec_err) - 1);
-		}
-			exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 	else
 	{
