@@ -1,11 +1,11 @@
 #include "shell.h"
 
 /**
- * env_builtin - prints the environment variables.
+ * _env_builtin - prints the environment variables.
  *
  */
 
-void env_builtin(void)
+void _env_builtin(void)
 {
 	int z = 0;
 
