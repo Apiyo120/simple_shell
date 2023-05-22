@@ -1,8 +1,7 @@
 #include "shell.h"
 
 /**
- * _print_prompt: Prints the shell prompt.
- *
+ * _print_prompt- Prints the shell prompt.
  */
 void _print_prompt(void)
 {

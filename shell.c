@@ -10,9 +10,9 @@
 
 int main(void)
 {
-	char* command = NULL;
+	char *command = NULL;
 	size_t command_size = 0;
-	char* args[COMMAND_BUFFER_SIZE / 2 + 1];
+	char *args[COMMAND_BUFFER_SIZE / 2 + 1];
 	int display_command = isatty(STDIN_FILENO);
 	int exit_status = 0;
 

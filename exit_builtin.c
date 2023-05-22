@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * exit_builtin - exitS the shell.
+ * _exit_builtin - exits the shell.
  */
 
 void _exit_builtin(void)
