@@ -11,7 +11,7 @@ void _env_builtin(void)
 
 	for	(z = 0; environ[z] != NULL; ++z)
 	{
-		write(STDOUT_FILENO, environ[z], _strlen(environ[z]));
+		write(STDOUT_FILENO, environ[z], strlen(environ[z]));
 		write(STDOUT_FILENO, "\n", 1);
 		z++;
 	}
