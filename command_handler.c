@@ -37,7 +37,6 @@ void _process_command(char *command, char *args[], int *exit_status)
 		args[z] = NULL;
 
 	_parse_line(command, args);
-
 	if (args[0] == NULL)
 		return;
 	if (_strcmp(args[0], "exit") == 0)
@@ -50,5 +49,7 @@ void _process_command(char *command, char *args[], int *exit_status)
 		_env_builtin();
 		return;
 	}
-	*exit_status = _execute(args);
+	execve(args[0], args, environ);
+	perror("execve");
+	exit(1);
 }
