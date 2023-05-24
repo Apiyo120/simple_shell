@@ -78,3 +78,37 @@ char *_strcpy(char *dest, const char *src)
 	*dest = '\0';
 	return (dest_start);
 }
+
+
+/**
+ * _atoi - Convert string to integer using custom_atoi.
+ * @str: The string to be converted to an integer.
+ *
+ * Return: The converted integer value.
+ */
+int _atoi(const char *str)
+{
+	int result = 0;
+	int sign = 1;
+	int z = 0;
+
+	while (str[z] == ' ' || str[z] == '\t')
+		z++;
+
+	if (str[z] == '-')
+	{
+		sign = -1;
+		z++;
+	}
+	else if (str[z] == '+')
+	{
+		z++;
+	}
+
+	while (str[z] >= '0' && str[z] <= '9')
+	{
+		result = result * 10 + (str[z] - '0');
+		z++;
+	}
+	return (sign * result);
+}

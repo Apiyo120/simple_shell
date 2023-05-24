@@ -10,28 +10,25 @@
 
 int main(void)
 {
-	char *command = NULL;
-	size_t command_size = 0;
+	char command[COMMAND_BUFFER_SIZE];
 	char *args[COMMAND_BUFFER_SIZE / 2 + 1];
-	int display_command = isatty(STDIN_FILENO);
 	int exit_status = 0;
 
 	while (1)
 	{
-		if (display_command)
-		{
-			_print_prompt();
-		}
-		if (getline(&command, &command_size, stdin) == -1)
-			break;
-		_process_command(command, args, &exit_status);
+		_print_prompt();
 
-		if (_strcmp(args[0], "exit") == 0)
+		if (fgets(command, sizeof(command), stdin) == NULL)
+			break;
+
+		command[strcspn(command, "\n")] = '\0';
+
+		if (_strcmp(command, "exit") == 0)
 		{
-			_exit_builtin();
 			break;
 		}
+
+		_process_command(command, args, &exit_status);
 	}
-	free(command);
 	return (exit_status);
 }

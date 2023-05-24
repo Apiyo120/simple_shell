@@ -26,5 +26,6 @@ int _strlen(char *str);
 char *_strcpy(char *dest, const char *src);
 void _process_command(char *command, char *args[], int *exit_status);
 void _print_prompt(void);
+int _atoi(const char *str);
 
 #endif

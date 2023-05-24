@@ -5,5 +5,6 @@
  */
 void _print_prompt(void)
 {
-	write(STDOUT_FILENO, "#James&Diana$ ", 14);
+	write(STDOUT_FILENO, "$ ", 2);
+	fflush(stdout);
 }

@@ -42,8 +42,7 @@ void _process_command(char *command, char *args[], int *exit_status)
 		return;
 	if (_strcmp(args[0], "exit") == 0)
 	{
-		free(command);
-		exit(*exit_status);
+		*exit_status = _atoi(args[1]);
 		return;
 	}
 	if (_strcmp(args[0], "env") == 0)
