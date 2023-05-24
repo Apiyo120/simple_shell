@@ -38,7 +38,6 @@ int main(int argc, char *argv[])
 		}
 		if (getline(&command, &command_size, stdin) == -1)
 			break;
-
 		_process_command(command, args, &exit_status);
 
 		if (_strcmp(args[0], "exit") == 0)
