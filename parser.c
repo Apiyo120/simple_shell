@@ -43,5 +43,5 @@ void _parse_line(char *line, char **args)
 	args[z] = NULL;
 
 	if (has_arguments && _strcmp(args[0], "exit") == 0)
-		_exit_builtin();
+	exit(0);
 }

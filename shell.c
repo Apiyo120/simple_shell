@@ -8,28 +8,14 @@
 
 #define COMMAND_BUFFER_SIZE 1000
 
-int main(int argc, char *argv[])
+int main(void)
 {
 	char *command = NULL;
 	size_t command_size = 0;
 	char *args[COMMAND_BUFFER_SIZE / 2 + 1];
 	int display_command = isatty(STDIN_FILENO);
 	int exit_status = 0;
-	int z, len;
 
-	if (argc > 1)
-	{
-		write(STDOUT_FILENO, "Command line arguments:\n",
-				_strlen("Command line arguments:\n"));
-		for (z = 1; z < argc; z++)
-		{
-			char arg_buffer[COMMAND_BUFFER_SIZE];
-
-			len = snprintf(arg_buffer, COMMAND_BUFFER_SIZE,
-					"Argument %d: %s\n", z, argv[z]);
-			write(STDOUT_FILENO, arg_buffer, len);
-		}
-	}
 	while (1)
 	{
 		if (display_command)
