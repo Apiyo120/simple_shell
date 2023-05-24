@@ -8,8 +8,9 @@
  *
  * @command: The user command to process.
  * @args: An array of strings to store the parsed command arguments.
+ * @exit_status: A pointer to the exit status variable to be updated.
  */
-void _process_command(char *command, char *args[])
+void _process_command(char *command, char *args[], int *exit_status)
 {
 	char *index = NULL;
 	int z, quote_flag = 0;
@@ -42,7 +43,7 @@ void _process_command(char *command, char *args[])
 	if (_strcmp(args[0], "exit") == 0)
 	{
 		free(command);
-		_exit_builtin();
+		exit(*exit_status);
 		return;
 	}
 	if (_strcmp(args[0], "env") == 0)
@@ -50,5 +51,5 @@ void _process_command(char *command, char *args[])
 		_env_builtin();
 		return;
 	}
-	_execute(args);
+	*exit_status = _execute(args);
 }

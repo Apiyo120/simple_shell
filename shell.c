@@ -14,6 +14,7 @@ int main(void)
 	size_t command_size = 0;
 	char *args[COMMAND_BUFFER_SIZE / 2 + 1];
 	int display_command = isatty(STDIN_FILENO);
+	int exit_status = 0;
 
 	while (1)
 	{
@@ -27,7 +28,7 @@ int main(void)
 			break;
 		}
 
-		_process_command(command, args);
+		_process_command(command, args, &exit_status);
 
 		if (_strcmp(args[0], "exit") == 0)
 		{
@@ -36,5 +37,5 @@ int main(void)
 		}
 	}
 	free(command);
-	return (0);
+	return (exit_status);
 }
