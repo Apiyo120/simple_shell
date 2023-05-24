@@ -15,12 +15,12 @@ char *_find_path(char *command)
 	char *folder = strtok(path, ":");
 	char *abs_path = NULL;
 	struct stat file_data;
-	size_t folder_len, command_len, path_len;
+	size_t command_len = _strlen(command);
+	size_t folder_len, path_len;
 
 	while (folder != NULL)
 	{
 		folder_len = _strlen(folder);
-		command_len = _strlen(command);
 		path_len = folder_len + 1 + command_len + 1;
 
 		abs_path = malloc(path_len * sizeof(char));
