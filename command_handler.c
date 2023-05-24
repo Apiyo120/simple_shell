@@ -49,7 +49,5 @@ void _process_command(char *command, char *args[], int *exit_status)
 		_env_builtin();
 		return;
 	}
-	execve(args[0], args, environ);
-	perror("execve");
-	exit(1);
+	*exit_status = _execute(args);
 }
