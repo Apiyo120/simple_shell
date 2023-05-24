@@ -10,7 +10,7 @@
  * @args: An array of strings to store the parsed command arguments.
  * @exit_status: A pointer to the exit status variable to be updated.
  */
-void _command(char *command, char *args[], int *exit_status)
+void _process_command(char *command, char *args[], int *exit_status)
 {
 	char *index = NULL;
 	int z, quote_flag = 0;
