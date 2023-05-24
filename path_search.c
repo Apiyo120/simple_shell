@@ -14,41 +14,30 @@ char *_find_path(char *command)
 	char *path = getenv("PATH");
 	char *folder = strtok(path, ":");
 	char *abs_path = NULL;
-	struct stat file_data;
 	size_t command_len = _strlen(command);
 	size_t folder_len, path_len;
 
-	path_len = command_len + 2;
 
-	abs_path = malloc(path_len * sizeof(char));
-	if (abs_path == NULL)
-	{
-		perror("malloc");
-		return (NULL);
-	}
 	while (folder != NULL)
 	{
 		folder_len = _strlen(folder);
+		path_len = folder_len + 1 + command_len + 1;
 
-		if (folder_len + command_len + 1 > path_len)
+		abs_path = malloc(path_len * sizeof(char));
+		if (abs_path == NULL)
 		{
-			path_len = folder_len + command_len + 1;
-			abs_path = realloc(abs_path, path_len * sizeof(char));
-			if (abs_path == NULL)
-			{
-				perror("realloc");
-				return (NULL);
-			}
+			return (NULL);
 		}
 		_strcpy(abs_path, folder);
 		_strcat(abs_path, "/");
 		_strcat(abs_path, command);
 
-		if (stat(abs_path, &file_data) == 0 && S_ISREG(file_data.st_mode)
-				&& (file_data.st_mode & S_IXUSR))
+		if (access(abs_path, F_OK) == 0 && access(abs_path, X_OK) == 0)
+		{
 			return (abs_path);
+		}
+		free(abs_path);
 		folder = strtok(NULL, ":");
 	}
-	free(abs_path);
 	return (NULL);
 }
