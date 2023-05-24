@@ -16,6 +16,7 @@ int main(void)
 	char *args[COMMAND_BUFFER_SIZE / 2 + 1];
 	int display_command = isatty(STDIN_FILENO);
 	int exit_status = 0;
+	ssize_t getline_result;
 
 	while (1)
 	{
@@ -23,9 +24,14 @@ int main(void)
 		{
 			_print_prompt();
 		}
+		getline_result = getline(&command, &command_size, stdin);
 
-		if (getline(&command, &command_size, stdin) == -1)
+		if (getline_result == -1)
+		{
+			if (feof(stdin))
+				write(STDOUT_FILENO, "\n", 1);
 			break;
+		}
 
 		command[strcspn(command, "\n")] = '\0';
 
