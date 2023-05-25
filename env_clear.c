@@ -11,18 +11,22 @@
 
 int _setenv(const char *name, const char *value, int overwrite)
 {
-	if	(name == NULL || value == NULL)
+	if (name == NULL || value == NULL)
 	{
 		write(STDERR_FILENO, "Error: Invalid arguments for setenv. \n", 36);
 		return (-1);
 	}
 
-	if	(setenv(name, value, overwrite) == -1)
+	if (getenv(name) != NULL)
 	{
-		write(STDERR_FILENO, "Error: Unable to set environment variables. \n", 44);
+		if (!overwrite)
+			return (0);
+	}
+	if (setenv(name, value, 1) == -1)
+	{
+		write(STDERR_FILENO, "Error: Unable to set environment variable.\n", 44);
 		return (-1);
 	}
-
 	return (0);
 }
 
@@ -39,6 +43,11 @@ int _unsetenv(const char *name)
 	if	(name == NULL)
 	{
 		write(STDERR_FILENO, "Error: Unable to unset environment to ariable.\n", 46);
+		return (-1);
+	}
+	if (unsetenv(name) == -1)
+	{
+		write(STDERR_FILENO, "Error: Unable to unset environment variable.\n", 46);
 		return (-1);
 	}
 	return (0);
