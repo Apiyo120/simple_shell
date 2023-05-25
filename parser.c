@@ -30,7 +30,7 @@ void _parse_line(char *line, char **args)
 			args[z++] = line;
 			break;
 		}
-		end = '\0';
+		*end = '\0';
 
 		args[z++] = line;
 		line = end + 1;
