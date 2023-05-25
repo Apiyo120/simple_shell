@@ -41,6 +41,8 @@ int main(void)
 		{
 			break;
 		}
+		args[0] = command;
+		args[1] = NULL;
 
 		_process_command(command, args, &exit_status);
 	}
