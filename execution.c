@@ -18,6 +18,11 @@ int _execute(char **args)
 		_echo(args);
 		return (0);
 	}
+	else if (_strcmp(args[0], "cd") == 0)
+	{
+		_cd(args);
+		return (0);
+	}
 
 	process_id = fork();
 	if (process_id == -1)

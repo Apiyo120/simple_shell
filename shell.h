@@ -30,7 +30,7 @@ void _process_command(char *command, char *args[], int *exit_status);
 void _print_prompt(void);
 int _atoi(const char *str);
 void _cd(char **args);
-char *_getenv(const char *name);
-int _setenv(const char *name, const char *value);
+char *_getenv(char *name);
+int _setenv(const char *name, const char *value, int overwrite);
 
 #endif

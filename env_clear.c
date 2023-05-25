@@ -4,11 +4,12 @@
  * with the specified name and value
  * @name: name of environment variable.
  * @value: value to be assigned to environment variable.
+ * @overwrite: checks whether to overwrite or not
  *
  * Return: 0 on success, -1 if an error occurs.
  */
 
-int _setenv(const char *name, const char *value)
+int _setenv(const char *name, const char *value, int overwrite)
 {
 	if	(name == NULL || value == NULL)
 	{
@@ -16,7 +17,7 @@ int _setenv(const char *name, const char *value)
 		return (-1);
 	}
 
-	if	(setenv(name, value, 1) == -1)
+	if	(setenv(name, value, overwrite) == -1)
 	{
 		write(STDERR_FILENO, "Error: Unable to set environment variables. \n", 44);
 		return (-1);

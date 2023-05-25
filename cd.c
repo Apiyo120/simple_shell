@@ -1,5 +1,9 @@
 #include "shell.h"
 
+#define PATH_MAX 1024
+
+void update_pwd(char *dir);
+
 /**
  * _cd - function that changes the current working directory of the process.
  * @args: array of strings representing the command arguments.
@@ -36,7 +40,7 @@ void _cd(char **args)
 	}
 	if	(chdir(dir) != 0)
 	{
-		chr cd_err[] = "Error: Failed to change directory. \n";
+		char cd_err[] = "Error: Failed to change directory. \n";
 
 		write(STDERR_FILENO, cd_err, sizeof(cd_err) - 1);
 
@@ -54,7 +58,7 @@ void update_pwd(char *dir)
 {
 	char cwd[PATH_MAX];
 
-	if	(getcwd(cwd, sizeof(cwd)) != NULL)
+	if (getcwd(cwd, sizeof(cwd)) != NULL)
 	{
 		_setenv("PWD", cwd, 1);
 		_setenv("OLDPWD", dir, 1);
