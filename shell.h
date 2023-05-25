@@ -17,7 +17,7 @@
 
 extern char **environ;
 
-void _exit_builtin(void);
+void _exit_builtin(char *arg);
 void _parse_line(char *line, char **args);
 void _env_builtin(void);
 int _execute(char **args);

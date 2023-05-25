@@ -2,9 +2,18 @@
 
 /**
  * _exit_builtin - exits the shell.
+ * @arg: arguments
  */
 
-void _exit_builtin(void)
+void _exit_builtin(char *arg)
 {
-	exit(EXIT_SUCCESS);
+	int status;
+
+	if (arg == NULL)
+		exit(EXIT_SUCCESS);
+	else
+	{
+		status = atoi(arg);
+		exit(status);
+	}
 }
